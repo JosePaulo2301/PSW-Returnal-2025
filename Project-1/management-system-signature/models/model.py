@@ -1,10 +1,11 @@
-from sqlmodel import Field, SQLmodel, create_engine
+from sqlmodel import Field, SQLModel, create_engine
+
 from typing import Optional
 from datetime import date
 from decimal import Decimal
 
 
-class Subscrition(SQLmodel.model, table=True):
+class Subscrition(SQLModel, table=True):
     Id: int = Field(primary_key=True)
     empresa: str
     site: Optional[str] = None
@@ -13,9 +14,9 @@ class Subscrition(SQLmodel.model, table=True):
 
 
 sqlite_file_name = 'database.db'
-sqlite_url = f'aqlite:///{sqlite_file_name}'
+sqlite_url = f'sqlite:///{sqlite_file_name}'
 engine = create_engine(sqlite_url, echo=True)
 
 if __name__ == '__main__':
-    SQLmodel.metadata.create_all(engine)
+    SQLModel.metadata.create_all(engine)
 
