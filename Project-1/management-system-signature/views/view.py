@@ -20,19 +20,39 @@ class SubscribeService:
             statement = select(Subscription)
             result = session.exec(statement).all()
             return result
-            
+
+         #função privada/interna(dentro do escopo da classe)   
+    def _has_pay(self, result):
+        for res in result:
+            if res.date.month == date.today().month:
+                return True
+        return False
+
     def pay(self, subscription: Subscription):
         with Session(self.engine) as session:
-            statement = select(Payment).where(Subscription.empresa == subscription.empresa)
-            result = session.exec(statement).all()
+            # Filtra por "subscription_id"
+            statement = select(Payment).join(Subscription).where(Payment.subscription_id == subscription.id)
+            res = session.exec(statement).all()
 
-            pago = False
-            for res in result:
-                print(res.date)
+            if self._has_pay(res):
+                question = input("Essa conta já foi paga esse mês,deseja paga-la novamente? Y ou N: ")
+                if question.upper() != "Y":
+                    return None
+
+            # Cria um novo pagamento
+            pay = Payment(subscription_id=subscription.id, date=date.today())
+            session.add(pay)
+            session.commit()
+
 
 
 ss = SubscribeService(engine)
-#subscription = Subscription(empresa='Youtube', site='youtube.com.br', data_assinatura=date.today(), valor=49.90)
+subscription = Subscription(empresa='globo.play', site='goboplay.com.br', data_assinatura=date.today(), valor=75.44)
 #ss.create(subscription)
-#print(ss.list_all())
-ss.pay(Subscription)
+
+assinaturas = ss.list_all()
+for chave, valor in enumerate(assinaturas):
+    print(f'[{chave} -> {valor.empresa}]')
+
+x = int(input())
+ss.pay(assinaturas[x])

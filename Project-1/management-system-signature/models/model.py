@@ -1,4 +1,4 @@
-from sqlmodel import Field, SQLModel, create_engine, Relationship
+from sqlmodel import Field, SQLModel, Relationship
 
 from typing import Optional
 from datetime import date
@@ -13,9 +13,10 @@ class Subscription(SQLModel, table=True):
     valor: Decimal
 
 class Payment(SQLModel, table=True):
-     Id: int = Field(primary_key=True)
-     subscription_id: int = Field(foreign_key='subscription.id')
-     subscription: Subscription = Relationship()
-     date: date
+    id: int = Field(primary_key=True)  # Deve ser "id" e não "Id"
+    subscription_id: int = Field(foreign_key="subscription.id")  # Certifique-se de que o nome e a chave estrangeira estão corretos
+    subscription: Subscription = Relationship()
+    date: date
+
 
 
