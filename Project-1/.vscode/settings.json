@@ -1,5 +1,7 @@
 {
-    "editor.fontFamily": "Roboto Mono for Powerline",
+    // "editor.fontFamily": "Roboto Mono for Powerline",
+    "editor.fontFamily": "Liberation Mono for Powerline",
+   // "editor.fontFamily": "SF Mono",
     "terminal.integrated.fontFamily": "Hack",
     "editor.fontSize": 15,
     "terminal.integrated.fontSize": 12

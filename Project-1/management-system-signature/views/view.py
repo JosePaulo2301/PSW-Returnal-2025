@@ -20,6 +20,11 @@ class SubscribeService:
             statement = select(Subscription)
             result = session.exec(statement).all()
             return result
+    def delete(self, id):
+        with Session(self.engine) as session:
+            statement = select(Subscription).where(Subscription.id == id)
+            result = session.exec(statement).one()
+            print(result)
 
          #função privada/interna(dentro do escopo da classe)   
     def _has_pay(self, result):
@@ -44,15 +49,27 @@ class SubscribeService:
             session.add(pay)
             session.commit()
 
+    def total_value(self):
+        with Session(self.engine) as session:
+            statement = select(Subscription)
+            res = session.exec(statement).all()
+        
+
+        total = 0
+        for result in res:
+            total+= result.valor
+        return float(total)
+    
 
 
 ss = SubscribeService(engine)
 subscription = Subscription(empresa='globo.play', site='goboplay.com.br', data_assinatura=date.today(), valor=75.44)
+print(ss.total_value())
 #ss.create(subscription)
 
-assinaturas = ss.list_all()
-for chave, valor in enumerate(assinaturas):
-    print(f'[{chave} -> {valor.empresa}]')
+# assinaturas = ss.list_all()
+# for chave, valor in enumerate(assinaturas):
+#     print(f'[{chave} -> {valor.empresa}]')
 
-x = int(input())
-ss.pay(assinaturas[x])
+# x = int(input())
+# ss.pay(assinaturas[x])
