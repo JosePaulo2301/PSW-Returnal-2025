@@ -1,9 +1,10 @@
 # Lógica da aplicação
+
 import __init__
 from models.database import engine
 from models.model import Payment, Subscription
 from sqlmodel import Session, select
-from datetime import date
+from datetime import date, datetime
 
 class SubscribeService:
     def __init__(self, engine):
@@ -20,11 +21,13 @@ class SubscribeService:
             statement = select(Subscription)
             result = session.exec(statement).all()
             return result
+
     def delete(self, id):
         with Session(self.engine) as session:
             statement = select(Subscription).where(Subscription.id == id)
             result = session.exec(statement).one()
-            print(result)
+            session.delete(result)
+            session.commit()
 
          #função privada/interna(dentro do escopo da classe)   
     def _has_pay(self, result):
@@ -35,7 +38,7 @@ class SubscribeService:
 
     def pay(self, subscription: Subscription):
         with Session(self.engine) as session:
-            # Filtra por "subscription_id"
+            
             statement = select(Payment).join(Subscription).where(Payment.subscription_id == subscription.id)
             res = session.exec(statement).all()
 
@@ -44,7 +47,6 @@ class SubscribeService:
                 if question.upper() != "Y":
                     return None
 
-            # Cria um novo pagamento
             pay = Payment(subscription_id=subscription.id, date=date.today())
             session.add(pay)
             session.commit()
@@ -61,15 +63,48 @@ class SubscribeService:
         return float(total)
     
 
+    def _get_last_23_monats_native(self):
+        today = datetime.now()
+        year = today.year
+        month = today.month
+        last_12_month = []
+
+        for _ in range(12):
+            last_12_month.append((month, year))  
+            month -= 1
+            if month == 0:
+                month = 12
+                year -= 1
+
+        return last_12_month[::-1]  
+
+
+    def _get_values_for_months(self, last_12_months):
+        with Session(self.engine) as session:
+            statement = select(Payment).join(Subscription)
+            result = session.exec(statement).all()
+            value_for_months = []
+            for i in last_12_months:
+                value = 0
+                for res in result:
+                    if res.subscription and res.date.month == i[0] and res.date.year == i[1]:
+                        value += float(res.subscription.valor)
+                value_for_months.append(value)
+            return value_for_months
+
+
+    def gen_chart(self):
+        last_12_months = self._get_last_23_monats_native()
+        values_for_months = self._get_values_for_months(last_12_months)
+        print(last_12_months)
+        print(values_for_months)
+
+
+        import matplotlib.pyplot as plt
+
+        plt.plot([1,2], [5,5])
+        plt.show()
 
 ss = SubscribeService(engine)
-subscription = Subscription(empresa='globo.play', site='goboplay.com.br', data_assinatura=date.today(), valor=75.44)
-print(ss.total_value())
-#ss.create(subscription)
+print(ss.gen_chart())
 
-# assinaturas = ss.list_all()
-# for chave, valor in enumerate(assinaturas):
-#     print(f'[{chave} -> {valor.empresa}]')
-
-# x = int(input())
-# ss.pay(assinaturas[x])
