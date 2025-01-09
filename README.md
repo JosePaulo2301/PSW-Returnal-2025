@@ -39,6 +39,9 @@ pip install -r requirements.txt
 git@github.com:JosePaulo2301/PSW-Returnal-2025.git
 ```
 ```
+run git checkout Project-1
+```
+```
 Access folder project: cd PSW-Returnal-2025/Project-1/management-system-signature$ 
 ``` 
    
