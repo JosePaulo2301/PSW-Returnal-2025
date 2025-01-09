@@ -5,7 +5,6 @@ from models.database import engine
 from models.model import Payment, Subscription
 from sqlmodel import Session, select
 from datetime import date, datetime
-
 class SubscribeService:
     def __init__(self, engine):
         self.engine = engine
@@ -63,7 +62,7 @@ class SubscribeService:
         return float(total)
     
 
-    def _get_last_23_monats_native(self):
+    def _get_last_12_months_native(self):
         today = datetime.now()
         year = today.year
         month = today.month
@@ -94,17 +93,20 @@ class SubscribeService:
 
 
     def gen_chart(self):
-        last_12_months = self._get_last_23_monats_native()
+        last_12_months = self._get_last_12_months_native()
         values_for_months = self._get_values_for_months(last_12_months)
-        print(last_12_months)
-        print(values_for_months)
+  
+        last_12_months = list(map(lambda x: x[0], self._get_last_12_months_native()))
 
-
+        
         import matplotlib.pyplot as plt
 
-        plt.plot([1,2], [5,5])
+
+        plt.plot(last_12_months, values_for_months)
         plt.show()
 
 ss = SubscribeService(engine)
-print(ss.gen_chart())
+#print(ss.gen_chart())
+#insert = Subscription(empresa="Netflix", site='netflix.com.br', data_assinatura=date.today(), valor=25.25)
+#ss.create(insert)
 

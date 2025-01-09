@@ -10,11 +10,12 @@ class Subscription(SQLModel, table=True):
     empresa: str
     site: Optional[str] = None
     data_assinatura: date
+
     valor: Decimal
 
 class Payment(SQLModel, table=True):
-    id: int = Field(primary_key=True)  # Deve ser "id" e não "Id"
-    subscription_id: int = Field(foreign_key="subscription.id")  # Certifique-se de que o nome e a chave estrangeira estão corretos
+    id: int = Field(primary_key=True)
+    subscription_id: int = Field(foreign_key="subscription.id") 
     subscription: Subscription = Relationship()
     date: date
 
