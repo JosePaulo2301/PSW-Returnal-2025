@@ -35,7 +35,17 @@ pip install -r requirements.txt
 
 ## Running the Application
 1. Clone the repository and navigate to the project directory.
-2. Run the main script:
+```
+git@github.com:JosePaulo2301/PSW-Returnal-2025.git
+```
+```
+run git checkout project-1
+```
+```
+Access folder project: cd PSW-Returnal-2025/Project-1/management-system-signature$ 
+``` 
+   
+3. Run the main script:
 ```
 python app.py
 ```
@@ -80,4 +90,4 @@ typing_extensions==4.12.2
 - Include notifications for upcoming payments.
 
 📧 Contact
-If you have any questions or suggestions, feel free to reach out to us via email at support@subscriptionmanager.com.
+If you have any questions or suggestions, feel free to reach out to us via email at jose.dev2301@gmail.com
