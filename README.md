@@ -3,7 +3,7 @@
 The **Subscription Manager** is a Python application designed to consolidate and control expenses related to service subscriptions, such as Netflix, Globo Play, Amazon, StartPlus etc.. By centralizing this information, the application helps track and manage recurring costs more efficiently, providing insights and visualizations for better financial control.
 
 This app is part of PSW-Returnal, training provided by pythonando.
-
+  
 ---
 
 ## 🛠 Features
