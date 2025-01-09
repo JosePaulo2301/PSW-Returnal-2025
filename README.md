@@ -80,4 +80,4 @@ typing_extensions==4.12.2
 - Include notifications for upcoming payments.
 
 📧 Contact
-If you have any questions or suggestions, feel free to reach out to us via email at support@subscriptionmanager.com.
+If you have any questions or suggestions, feel free to reach out to us via email at jose.dev@gmail.com
