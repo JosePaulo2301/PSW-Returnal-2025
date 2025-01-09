@@ -1,21 +1,23 @@
-from sqlmodel import Field, SQLmodel, create_engine
+from sqlmodel import Field, SQLModel, Relationship
+
 from typing import Optional
 from datetime import date
 from decimal import Decimal
 
 
-class Subscrition(SQLmodel.model, table=True):
-    Id: int = Field(primary_key=True)
+class Subscription(SQLModel, table=True):
+    id: int = Field(primary_key=True)
     empresa: str
     site: Optional[str] = None
     data_assinatura: date
+
     valor: Decimal
 
+class Payment(SQLModel, table=True):
+    id: int = Field(primary_key=True)
+    subscription_id: int = Field(foreign_key="subscription.id") 
+    subscription: Subscription = Relationship()
+    date: date
 
-sqlite_file_name = 'database.db'
-sqlite_url = f'aqlite:///{sqlite_file_name}'
-engine = create_engine(sqlite_url, echo=True)
 
-if __name__ == '__main__':
-    SQLmodel.metadata.create_all(engine)
 
